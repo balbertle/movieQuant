@@ -60,15 +60,12 @@ for index, row in tqdm(df_to_process.iterrows(), total=df_to_process.shape[0]):
     row_data['average_hype'] = average_hype
     results_batch.append(row_data)
 
-    # Save progress in batches
     if len(results_batch) >= BATCH_SIZE:
         batch_df = pd.DataFrame(results_batch)
         df_output = pd.concat([df_output, batch_df], ignore_index=True)
-        # Use mode='a' and header=not os.path.exists() for cleaner appending
         df_output.to_csv(OUTPUT_CSV_PATH, index=False, mode='w', header=True)
-        results_batch = [] # Clear the batch
+        results_batch = []
 
-# Save any remaining results after the loop finishes
 if results_batch:
     batch_df = pd.DataFrame(results_batch)
     df_output = pd.concat([df_output, batch_df], ignore_index=True)

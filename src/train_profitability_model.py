@@ -19,7 +19,6 @@ df = df[(df['budget'] > 1000) & (df['revenue'] > 1000)].copy()
 print(f"Loaded and cleaned data. Shape is now: {df.shape}")
 
 # --- 2. Feature Engineering ---
-# This section remains the same, as it processes the loaded data
 def parse_json_col(column_str, key_name):
     try:
         item_list = ast.literal_eval(str(column_str))
@@ -34,7 +33,7 @@ df['main_company'] = df['production_companies'].apply(lambda x: parse_json_col(x
 
 # Select all numeric features, including the new hype data
 numeric_features = df[['budget', 'popularity', 'runtime', 'average_hype']]
-numeric_features = numeric_features.fillna(0) # Fill any potential NaN values from hype data
+numeric_features = numeric_features.fillna(0)
 
 # Select all categorical features
 categorical_feature_names = [
@@ -51,7 +50,6 @@ X = pd.concat([numeric_features.reset_index(drop=True), encoded_features.reset_i
 df['roi'] = df['revenue'] / df['budget']
 y = df['roi']
 
-# --- 3. Train the Quantile Models ---
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 quantiles = {
@@ -69,7 +67,6 @@ for name, q in quantiles.items():
 
 print("\nAll models trained successfully!")
 
-# --- 4. Save the Models and Supporting Files ---
 joblib.dump(models, '../models/roi_quantile_models.pkl')
 joblib.dump(list(X.columns), '../models/model_columns.pkl')
 

@@ -20,9 +20,6 @@ if __name__ == "__main__":
         if details:
             all_movie_data.append(details)
         else:
-            # This print statement can clutter the progress bar,
-            # so you might want to log failures to a file instead.
-            # print(f"Could not fetch data for: {title}")
             pass
 
     if all_movie_data:
